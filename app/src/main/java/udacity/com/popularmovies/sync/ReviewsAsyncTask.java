@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import udacity.com.popularmovies.ReviewsAdapter;
-import udacity.com.popularmovies.TrailerAdapter;
 import udacity.com.popularmovies.data.MoviesContract;
 import udacity.com.popularmovies.utilities.NetworkUtils;
 import udacity.com.popularmovies.utilities.OpenMoviesJsonUtils;
@@ -40,35 +39,35 @@ public class ReviewsAsyncTask extends AsyncTask {
         try {
             String jsonMoviesResponse = NetworkUtils.getResponseFromHttpUrl(movieReviewsRequestUrl,context);
 
-            ContentValues[] MovieTrailers = OpenMoviesJsonUtils
-                    .getMoviesTrailersFromJson(context, jsonMoviesResponse);
+            ContentValues[] MovieReviews = OpenMoviesJsonUtils
+                    .getMoviesReviewsFromJson(context, jsonMoviesResponse);
 
-            if (MovieTrailers != null && MovieTrailers.length != 0) {
-                ContentResolver trailerContentResolver = context.getContentResolver();
+            if (MovieReviews != null && MovieReviews.length != 0) {
+                ContentResolver reviewContentResolver = context.getContentResolver();
 
                              /* Delete old movie data because we don't need to keep multiple movies' data */
-                trailerContentResolver.delete(
-                        MoviesContract.MovieTrailerEntry.CONTENT_URI,
+                reviewContentResolver.delete(
+                        MoviesContract.MovieReviewEntry.CONTENT_URI,
                         null,
                         null);
 
                               /* Insert our new movie data into Movies's ContentProvider */
-                trailerContentResolver.bulkInsert(
-                        MoviesContract.MovieTrailerEntry.CONTENT_URI,
-                        MovieTrailers);
+                reviewContentResolver.bulkInsert(
+                        MoviesContract.MovieReviewEntry.CONTENT_URI,
+                        MovieReviews);
 
 
-                Uri QueryUri = MoviesContract.MovieTrailerEntry.CONTENT_URI;
-                String[] projectionColumns = {MoviesContract.MovieTrailerEntry._ID};
+                Uri QueryUri = MoviesContract.MovieReviewEntry.CONTENT_URI;
+                String[] projectionColumns = {MoviesContract.MovieReviewEntry._ID};
 
-                final Cursor cursorTrailer = context.getContentResolver().query(
+                final Cursor cursorReviews = context.getContentResolver().query(
                         QueryUri,
                         projectionColumns,
                         null,
                         null,
                         null);
 
-                return cursorTrailer;
+                return cursorReviews;
             }
 
         } catch (IOException e) {
@@ -90,6 +89,6 @@ public class ReviewsAsyncTask extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         Cursor temp = (Cursor) o ;
-       // tAdapter.swapCursor(temp);
+        rAdapter.swapCursor(temp);
     }
 }

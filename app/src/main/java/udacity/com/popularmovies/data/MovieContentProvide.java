@@ -19,7 +19,7 @@ public class MovieContentProvide extends ContentProvider {
     //Stage 2
     public static final int CODE_MOVIE_TRAILER = 222;
     public static final int CODE_MOVIE_TRAILER_ID = 300;
-    public static final int CODE_MOVIE_REVIEWS_ID = 400;
+    public static final int CODE_MOVIE_REVIEWS = 400;
 
     // Member variable for a TaskDbHelper that's initialized in the onCreate() method
     private MovieDBHelper movieDbHelper;
@@ -35,12 +35,6 @@ public class MovieContentProvide extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = MoviesContract.CONTENT_AUTHORITY;
 
-        /*
-         * For each type of URI you want to add, create a corresponding code. Preferably, these are
-         * constant fields in your class so that you can use them throughout the class and you no
-         * they aren't going to change. In Sunshine, we use CODE_WEATHER or CODE_WEATHER_WITH_DATE.
-         */
-
         /* This URI is content://udacity.com.popularmovies/movies/ */
         matcher.addURI(authority, MoviesContract.PATH_MOVIES, CODE_MOVIES);
         matcher.addURI(authority, MoviesContract.PATH_MOVIES + "/#", CODE_MOVIES_ID);
@@ -48,6 +42,8 @@ public class MovieContentProvide extends ContentProvider {
         //Stage 2
         matcher.addURI(authority, MoviesContract.PATH_MOVIE_TRAILERS, CODE_MOVIE_TRAILER);
         matcher.addURI(authority, MoviesContract.PATH_MOVIE_TRAILERS + "/#", CODE_MOVIE_TRAILER_ID);
+
+        matcher.addURI(authority, MoviesContract.PATH_MOVIE_REVIEWS, CODE_MOVIE_REVIEWS);
 
         return matcher;
     }
@@ -101,6 +97,27 @@ public class MovieContentProvide extends ContentProvider {
                 }
 
                 return rowsInserted2;
+            case CODE_MOVIE_REVIEWS :
+
+                db.beginTransaction();
+                int rowsInserted3 = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(MoviesContract.MovieReviewEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsInserted3++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted3 > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                return rowsInserted3;
 
             default:
                 return super.bulkInsert(uri, values);
@@ -180,6 +197,17 @@ public class MovieContentProvide extends ContentProvider {
                         sortOrder);
                 break;
             }
+            case CODE_MOVIE_REVIEWS:{
+                cursor = movieDbHelper.getReadableDatabase().query(
+                        MoviesContract.MovieReviewEntry.TABLE_NAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -227,6 +255,12 @@ public class MovieContentProvide extends ContentProvider {
             case CODE_MOVIE_TRAILER:
                 numRowsDeleted = movieDbHelper.getWritableDatabase().delete(
                         MoviesContract.MovieTrailerEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
+            case CODE_MOVIE_REVIEWS:
+                numRowsDeleted = movieDbHelper.getWritableDatabase().delete(
+                        MoviesContract.MovieReviewEntry.TABLE_NAME,
                         selection,
                         selectionArgs);
                 break;

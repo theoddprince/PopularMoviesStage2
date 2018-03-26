@@ -37,6 +37,12 @@ public class OpenMoviesJsonUtils {
     private static final String TRAILER_SIZE = "size";
     private static final String TRAILER_TYPE = "type";
 
+    private static final String REVIEWS_RESULTS = "results";
+    private static final String REVIEWS_AUTHOR = "author";
+    private static final String REVIEWS_CONTENT = "content";
+    private static final String REVIEWS_ID = "id";
+    private static final String REVIEWS_URL = "url";
+
     public static ContentValues[] getMoviesContentValuesFromJson(Context context, String moviesJsonStr)
             throws JSONException {
 
@@ -147,5 +153,51 @@ public class OpenMoviesJsonUtils {
         }
 
         return movieTrailerValues;
+    }
+
+    public static ContentValues[] getMoviesReviewsFromJson(Context context, String moviesJsonStr)
+            throws JSONException {
+
+        JSONObject moviesJson = new JSONObject(moviesJsonStr);
+
+        /* Is there an error? */
+        if (moviesJson.has(OWM_MESSAGE_CODE)) {
+            int errorCode = moviesJson.getInt(OWM_MESSAGE_CODE);
+
+            switch (errorCode) {
+                case HttpURLConnection.HTTP_OK:
+                    break;
+                case HttpURLConnection.HTTP_NOT_FOUND:
+                    /* Location invalid */
+                    return null;
+                default:
+                    /* Server probably down */
+                    return null;
+            }
+        }
+
+        JSONArray jsonMoviesArray = moviesJson.getJSONArray(REVIEWS_RESULTS);
+
+        ContentValues[] movieReviewsValues = new ContentValues[jsonMoviesArray.length()];
+
+        for (int i = 0; i < jsonMoviesArray.length(); i++) {
+
+            String review_author = jsonMoviesArray.getJSONObject(i).optString(REVIEWS_AUTHOR) ;
+            String review_content = jsonMoviesArray.getJSONObject(i).optString(REVIEWS_CONTENT) ;
+            String review_id = jsonMoviesArray.getJSONObject(i).optString(REVIEWS_ID) ;
+            String review_url = jsonMoviesArray.getJSONObject(i).optString(REVIEWS_URL) ;
+
+            ContentValues reviewsValues = new ContentValues();
+
+            reviewsValues.put(MoviesContract.MovieReviewEntry.COLUMN_REVIEW_AUTHOR , review_author);
+            reviewsValues.put(MoviesContract.MovieReviewEntry.COLUMN_REVIEW_CONTENT , review_content);
+            reviewsValues.put(MoviesContract.MovieReviewEntry.COLUMN_REVIEW_ID , review_id);
+            reviewsValues.put(MoviesContract.MovieReviewEntry.COLUMN_REVIEW_URL , review_url);
+
+
+            movieReviewsValues[i] = reviewsValues ;
+        }
+
+        return movieReviewsValues;
     }
 }

@@ -1,15 +1,12 @@
 package udacity.com.popularmovies;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import udacity.com.popularmovies.data.MoviesContract;
 
@@ -19,7 +16,6 @@ import udacity.com.popularmovies.data.MoviesContract;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.MovieAdapterViewHolder> {
     private Cursor mCursor;
-    //final private TrailerAdapter.MovieAdapterOnClickHandler mClickHandler;
     private final Context mContext;
 
     public ReviewsAdapter(@NonNull Context context) {
@@ -39,10 +35,10 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.MovieAda
     @Override
     public void onBindViewHolder(@NonNull ReviewsAdapter.MovieAdapterViewHolder holder, int position) {
         mCursor.moveToPosition(position);
-       // String trailer_key = mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieTrailerEntry.COLUMN_TRAILER_KEY));
-        //String trailer_name = mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieTrailerEntry.COLUMN_TRAILER_NAME));
-        //holder.movie_trailer_name.setText(trailer_name);
-      //  Picasso.with(mContext).load(buildThumbnailUrl(trailer_key)).into(holder.movie_trailer_thumb);
+        String review_author = mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieReviewEntry.COLUMN_REVIEW_AUTHOR));
+        String review_content = mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieReviewEntry.COLUMN_REVIEW_CONTENT));
+        holder.movie_review_content.setText(review_content);
+        holder.movie_review_author.setText(review_author);
     }
 
     public void swapCursor(Cursor newCursor) {
@@ -57,13 +53,14 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.MovieAda
     }
 
     class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-       // final TextView movie_trailer_name;
-       // final ImageView movie_trailer_thumb;
+        final TextView movie_review_content;
+        final TextView movie_review_author;
 
         MovieAdapterViewHolder(View view) {
             super(view);
-            //movie_trailer_name = view.findViewById(R.id.trailer_name);
-           // movie_trailer_thumb = view.findViewById(R.id.movie_trailer_image);
+            movie_review_content = view.findViewById(R.id.reviews_txt);
+            movie_review_author = view.findViewById(R.id.author_txt);
+
             view.setOnClickListener(this);
         }
 

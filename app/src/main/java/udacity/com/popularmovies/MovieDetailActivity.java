@@ -64,17 +64,25 @@ public class MovieDetailActivity extends AppCompatActivity implements
         mDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
         tRecyclerView = mDetailBinding.recyclerviewTrailers;
+        rRecyclerView =mDetailBinding.recyclerviewReviews;
 
-        LinearLayoutManager layoutManager =
+        LinearLayoutManager layoutManagerTrailer =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
-        tRecyclerView.setLayoutManager(layoutManager);
+        LinearLayoutManager layoutManagerReviews =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+        tRecyclerView.setLayoutManager(layoutManagerTrailer);
         tRecyclerView.setHasFixedSize(true);
         tAdapter = new TrailerAdapter(this);
         tRecyclerView.setNestedScrollingEnabled(false);
         tRecyclerView.setAdapter(tAdapter);
 
-
+        rRecyclerView.setLayoutManager(layoutManagerReviews);
+        rRecyclerView.setHasFixedSize(true);
+        rAdapter = new ReviewsAdapter(this);
+        rRecyclerView.setNestedScrollingEnabled(false);
+        rRecyclerView.setAdapter(rAdapter);
 
         mUri = getIntent().getData();
         if (mUri == null) throw new NullPointerException("URI for MovieDetailActivity cannot be null");

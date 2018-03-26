@@ -13,15 +13,12 @@ public class MoviesContract {
     public static final String PATH_MOVIE_TRAILERS= "trailers";
     public static final String PATH_MOVIE_REVIEWS= "reviews";
 
-    /* Inner class that defines the table contents of the weather table */
     public static final class MovieEntry implements BaseColumns {
 
-        /* The base CONTENT_URI used to query the Weather table from the content provider */
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_MOVIES)
                 .build();
 
-        /* Used internally as the name of our weather table. */
         public static final String TABLE_NAME = "movies";
 
         public static final String COLUMN_VOTE_COUNT = "vote_count";
@@ -47,15 +44,12 @@ public class MoviesContract {
         }
     }
 
-
     public static final class MovieTrailerEntry implements BaseColumns {
 
-        /* The base CONTENT_URI used to query the Weather table from the content provider */
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(PATH_MOVIE_TRAILERS)
                 .build();
 
-        /* Used internally as the name of our weather table. */
         public static final String TABLE_NAME = "trailers";
 
         public static final String COLUMN_TRAILER_ID = "id";
@@ -67,10 +61,20 @@ public class MoviesContract {
         public static final String COLUMN_TRAILER_SIZE = "size";
         public static final String COLUMN_TRAILER_TYPE = "type";
 
-        public static Uri buildTrailerUriWithId(String trailerId) {
-            return CONTENT_URI.buildUpon()
-                    .appendPath(trailerId)
-                    .build();
-        }
+    }
+
+    public static final class MovieReviewEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_MOVIE_REVIEWS)
+                .build();
+
+        public static final String TABLE_NAME = "reviews";
+
+        public static final String COLUMN_REVIEW_AUTHOR = "author";
+        public static final String COLUMN_REVIEW_CONTENT = "content";
+        public static final String COLUMN_REVIEW_ID = "id";
+        public static final String COLUMN_REVIEW_URL = "url";
+
     }
 }

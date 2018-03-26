@@ -11,7 +11,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "moviesDB.db";
 
     // If you change the database schema, you must increment the database version
-    private static final int VERSION = 3;
+    private static final int VERSION = 4;
 
     // Constructor
     MovieDBHelper(Context context) {
@@ -49,12 +49,22 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MoviesContract.MovieTrailerEntry.COLUMN_TRAILER_TYPE + " TEXT NOT NULL);";
 
         db.execSQL(CREATE_TABLE_TRAILERS);
+
+        final String CREATE_TABLE_REVIEWS = "CREATE TABLE "  + MoviesContract.MovieReviewEntry.TABLE_NAME + " (" +
+                MoviesContract.MovieReviewEntry._ID                + " INTEGER PRIMARY KEY, " +
+                MoviesContract.MovieReviewEntry.COLUMN_REVIEW_AUTHOR + " TEXT NOT NULL, " +
+                MoviesContract.MovieReviewEntry.COLUMN_REVIEW_CONTENT    + " TEXT NOT NULL," +
+                MoviesContract.MovieReviewEntry.COLUMN_REVIEW_ID + " TEXT NOT NULL," +
+                MoviesContract.MovieReviewEntry.COLUMN_REVIEW_URL + " TEXT NOT NULL);";
+
+        db.execSQL(CREATE_TABLE_REVIEWS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + MoviesContract.MovieEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + MoviesContract.MovieTrailerEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + MoviesContract.MovieReviewEntry.TABLE_NAME);
         onCreate(db);
     }
 }
