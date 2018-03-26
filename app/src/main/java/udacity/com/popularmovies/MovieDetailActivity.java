@@ -28,6 +28,7 @@ import java.net.URL;
 
 import udacity.com.popularmovies.data.MoviesContract;
 import udacity.com.popularmovies.databinding.ActivityMovieDetailBinding;
+import udacity.com.popularmovies.sync.ReviewsAsyncTask;
 import udacity.com.popularmovies.sync.TrailersAsyncTask;
 import udacity.com.popularmovies.utilities.NetworkUtils;
 import udacity.com.popularmovies.utilities.OpenMoviesJsonUtils;
@@ -38,8 +39,9 @@ public class MovieDetailActivity extends AppCompatActivity implements
     String posterMovieUrl = "http://image.tmdb.org/t/p/w500";
 
     private TrailerAdapter tAdapter;
-    private RecyclerView tRecyclerView;
-    private URL movieTrailersRequestUrl;
+    private ReviewsAdapter rAdapter;
+    private RecyclerView tRecyclerView , rRecyclerView;
+    private URL movieTrailersRequestUrl , movieReviewsRequestUrl;
 
      public static final String[] MOVIE_DETAIL_PROJECTION = {
             MoviesContract.MovieEntry.COLUMN_ID,
@@ -62,6 +64,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
         mDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
         tRecyclerView = mDetailBinding.recyclerviewTrailers;
+
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
@@ -70,6 +73,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
         tAdapter = new TrailerAdapter(this);
         tRecyclerView.setNestedScrollingEnabled(false);
         tRecyclerView.setAdapter(tAdapter);
+
+
 
         mUri = getIntent().getData();
         if (mUri == null) throw new NullPointerException("URI for MovieDetailActivity cannot be null");
@@ -131,6 +136,10 @@ public class MovieDetailActivity extends AppCompatActivity implements
         movieTrailersRequestUrl = NetworkUtils.getTrailersUrl(this, data.getString(data.getColumnIndex(MoviesContract.MovieEntry.COLUMN_ID))) ;
         TrailersAsyncTask myTask = new TrailersAsyncTask(this,movieTrailersRequestUrl,tAdapter);
         myTask.execute();
+
+        movieReviewsRequestUrl = NetworkUtils.getReviewsUrl(this , data.getString(data.getColumnIndex(MoviesContract.MovieEntry.COLUMN_ID)));
+        ReviewsAsyncTask revTast = new ReviewsAsyncTask(this,movieReviewsRequestUrl , rAdapter);
+        revTast.execute();
 
     }
 
