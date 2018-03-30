@@ -5,7 +5,10 @@
     <string name="API_KEY">Your API</string>
     //The Movies URL
     <string name="MOVIES_URL">https://api.themoviedb.org/3/movie/</string>
-
+    //Poster Url
+    <string name="POSTER_MOVIES_URL">http://image.tmdb.org/t/p/w500</string>
+    //YouTube Link
+    <string name="YOUTUBE_LINK">https://www.youtube.com/watch?v=</string>
 
     <string name="pref_sort_key" translatable="false">Sort</string>
     <string name="pref_sort_label">Movies Sorted By</string>
@@ -27,4 +30,15 @@
     <string name="release_date_desc">Release Date</string>
     <string name="movie_title_desc">Title</string>
     <string name="movie_poster_desc">Movie Poster</string>
+
+
+    <string name="pref_sort_favorite">Favorite</string>
+    <string name="pref_sort_favorite_label">Favorite</string>
+    <string name="pref_sort_favorite_value" translatable="false">Favorite</string>
+
+    <string name="trailer">Trailers : (Share Trailer by LongClick)</string>
+    <string name="trailer_1">Trailer 1</string>
+    <string name="reviews">Reviews :</string>
+    <string name="author">Author</string>
+
 </resources>

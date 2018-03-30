@@ -96,14 +96,14 @@
                 android:layout_width="130dp"
                 android:layout_height="57dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.511"
                 app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/card_rate"
-                card_view:cardElevation="10dp">
+                card_view:cardElevation="10dp"
+                android:layout_marginRight="8dp">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="5dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/release_date"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -142,6 +142,43 @@
 
                 </android.support.constraint.ConstraintLayout>
 
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_favorite"
+                android:layout_width="130dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardView"
+                app:layout_constraintTop_toBottomOf="@+id/card_date"
+                card_view:cardElevation="10dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="8dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <CheckBox
+                        android:id="@+id/checkBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:button="@drawable/checkbox"
+                        android:checked="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 
             <TextView
@@ -171,27 +208,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/movie_title" />
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="match_parent"
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_trailer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_detail"
+                card_view:cardElevation="1dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/trailer"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            </android.support.v7.widget.CardView>
+            <RelativeLayout
+                android:id="@+id/relativeLayout_trailer"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/darker_gray"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/movie_detail" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Trailers:"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view" />
+                app:layout_constraintTop_toBottomOf="@+id/card_trailer">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview_trailers"
@@ -200,55 +248,58 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-
                 android:clipToPadding="false"
                 android:paddingBottom="8dp"
                 android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintHorizontal_bias="0.0"/>
 
-            </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
 
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_review"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/darker_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerview_trailers" />
+                app:layout_constraintTop_toBottomOf="@+id/relativeLayout_trailer"
+                card_view:cardElevation="1dp">
 
             <TextView
                 android:id="@+id/txt_reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="Reviews:"
+                android:text="@string/reviews"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
+                android:layout_marginLeft="16dp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview_reviews"
-                android:layout_width="match_parent"
+            </android.support.v7.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout_reviews"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                android:paddingBottom="8dp"
-                android:scrollbars="none"
+                android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_reviews">
+                app:layout_constraintTop_toBottomOf="@+id/card_review">
 
-            </android.support.v7.widget.RecyclerView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview_reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="8dp"
+                    android:scrollbars="none" />
+            </RelativeLayout>
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </layout>

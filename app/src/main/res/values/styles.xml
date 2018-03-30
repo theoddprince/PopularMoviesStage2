@@ -8,6 +8,14 @@
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Used for settings preference theme -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/action_bar_bg</item>
+        <!-- Support library compatibility -->
+        <item name="background">@drawable/action_bar_bg</item>
     </style>
 
 </resources>
