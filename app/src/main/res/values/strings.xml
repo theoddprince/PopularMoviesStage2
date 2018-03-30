@@ -2,7 +2,7 @@
     <string name="app_name">Popular Movies</string>
 
     //The movie db API KEY
-    <string name="API_KEY">912f26cda5fc2a70a28d4f0625d975c0</string>
+    <string name="API_KEY">Your API</string>
     //The Movies URL
     <string name="MOVIES_URL">https://api.themoviedb.org/3/movie/</string>
 
