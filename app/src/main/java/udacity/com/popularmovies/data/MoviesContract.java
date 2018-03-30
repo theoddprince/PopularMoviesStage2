@@ -12,6 +12,7 @@ public class MoviesContract {
     //Stage 2
     public static final String PATH_MOVIE_TRAILERS= "trailers";
     public static final String PATH_MOVIE_REVIEWS= "reviews";
+    public static final String PATH_MOVIE_FAVORITE= "movies_favorite";
 
     public static final class MovieEntry implements BaseColumns {
 
@@ -76,5 +77,36 @@ public class MoviesContract {
         public static final String COLUMN_REVIEW_ID = "id";
         public static final String COLUMN_REVIEW_URL = "url";
 
+    }
+
+    public static final class MovieFavoriteEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_MOVIE_FAVORITE)
+                .build();
+
+        public static final String TABLE_NAME = "movies_favorite";
+
+        public static final String COLUMN_VOTE_COUNT = "vote_count";
+        public static final String COLUMN_ID = "id";
+        public static final String COLUMN_VIDEO = "video";
+        public static final String COLUMN_VOTE_AVERAGE = "vote_average";
+        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_POPULARITY = "popularity";
+        public static final String COLUMN_POSTER_PATH = "poster_path";
+        public static final String COLUMN_ORIGINAL_LANGUAGE = "original_language";
+        public static final String COLUMN_ORIGINAL_TITLE = "original_title";
+        public static final String COLUMN_OVERVIEW = "overview";
+        public static final String COLUMN_RELEASE_DATE = "release_date";
+
+        public static String getSqlSelectMoviePosters() {
+            return MoviesContract.MovieFavoriteEntry.COLUMN_POSTER_PATH;
+        }
+
+        public static Uri buildMovieUriWithId(String movieId) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(movieId)
+                    .build();
+        }
     }
 }

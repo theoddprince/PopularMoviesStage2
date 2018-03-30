@@ -1,32 +1,24 @@
 package udacity.com.popularmovies;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.Image;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import udacity.com.popularmovies.data.MoviesContract;
-
-/**
- * Created by AMIRMAT on 3/16/2018.
- */
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MovieAdapterViewHolder> {
 
-    String youTubeLink = "https://www.youtube.com/watch?v=";
     private Cursor mCursor;
-    //final private TrailerAdapter.MovieAdapterOnClickHandler mClickHandler;
     private final Context mContext;
 
     public TrailerAdapter(@NonNull Context context) {
@@ -67,7 +59,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MovieAda
         return "https://img.youtube.com/vi/" + videoKey + "/hqdefault.jpg";
     }
 
-    class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         final TextView movie_trailer_name;
         final ImageView movie_trailer_thumb;
 
@@ -76,6 +68,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MovieAda
             movie_trailer_name = view.findViewById(R.id.trailer_name);
             movie_trailer_thumb = view.findViewById(R.id.movie_trailer_image);
             view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
         }
 
         @Override
@@ -84,9 +77,27 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MovieAda
             mCursor.moveToPosition(adapterPosition);
 
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(youTubeLink + mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieTrailerEntry.COLUMN_TRAILER_KEY))));
+                    Uri.parse(mContext.getString(R.string.YOUTUBE_LINK) + mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieTrailerEntry.COLUMN_TRAILER_KEY))));
 
             mContext.startActivity(webIntent);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            mCursor.moveToPosition(adapterPosition);
+
+            String mimeType = "text/html";
+            String title = "Share Trailer";
+
+            ShareCompat.IntentBuilder
+                    .from((Activity) mContext)
+                    .setChooserTitle(title)
+                    .setType(mimeType)
+                    .setHtmlText(mContext.getString(R.string.YOUTUBE_LINK) + mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieTrailerEntry.COLUMN_TRAILER_KEY)))
+            .startChooser();
+
+            return true;
         }
     }
 }

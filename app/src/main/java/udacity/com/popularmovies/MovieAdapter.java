@@ -13,7 +13,7 @@ import udacity.com.popularmovies.data.MoviesContract;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private String posterMovieUrl = "http://image.tmdb.org/t/p/w500";
+    //private String posterMovieUrl = "http://image.tmdb.org/t/p/w500";
     private Cursor mCursor;
     private final Context mContext;
     final private MovieAdapterOnClickHandler mClickHandler;
@@ -46,7 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         mCursor.moveToPosition(position);
 
         String poster_str = mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_POSTER_PATH));
-        Picasso.with(mContext).load(posterMovieUrl + poster_str).into(holder.moviePoster);
+        Picasso.with(mContext).load(mContext.getString(R.string.POSTER_MOVIES_URL) + poster_str).into(holder.moviePoster);
     }
 
     @Override

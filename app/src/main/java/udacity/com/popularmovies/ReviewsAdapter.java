@@ -68,11 +68,6 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.MovieAda
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
-
-            //Intent webIntent = new Intent(Intent.ACTION_VIEW,
-            //        Uri.parse(youTubeLink + mCursor.getString(mCursor.getColumnIndex(MoviesContract.MovieTrailerEntry.COLUMN_TRAILER_KEY))));
-
-            //mContext.startActivity(webIntent);
         }
     }
 }

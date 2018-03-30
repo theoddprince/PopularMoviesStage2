@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-
-import java.util.concurrent.TimeUnit;
-
 import udacity.com.popularmovies.data.MoviesContract;
 import udacity.com.popularmovies.sync.MoviesSyncIntentService;
 
@@ -48,12 +45,6 @@ public class MoviesSyncUtils {
 
                 /* URI for every row of movie data in our movie table*/
                 Uri QueryUri = MoviesContract.MovieEntry.CONTENT_URI;
-                /*
-                 * Since this query is going to be used only as a check to see if we have any
-                 * data (rather than to display data), we just need to PROJECT the ID of each
-                 * row. In our queries where we display data, we need to PROJECT more columns
-                 * to determine what movie details need to be displayed.
-                 */
                 String[] projectionColumns = {MoviesContract.MovieEntry._ID};
                 //String selectionStatement = MoviesContract.MovieEntry.getSqlSelectMoviePosters();
 
@@ -65,20 +56,7 @@ public class MoviesSyncUtils {
                         null,
                         null,
                         null);
-                /*
-                 * A Cursor object can be null for various different reasons. A few are
-                 * listed below.
-                 *
-                 *   1) Invalid URI
-                 *   2) A certain ContentProvider's query method returns null
-                 *   3) A RemoteException was thrown.
-                 *
-                 * Bottom line, it is generally a good idea to check if a Cursor returned
-                 * from a ContentResolver is null.
-                 *
-                 * If the Cursor was null OR if it was empty, we need to sync immediately to
-                 * be able to display data to the user.
-                 */
+
                 if (null == cursor || cursor.getCount() == 0) {
                     startImmediateSync(context);
                 }

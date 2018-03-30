@@ -15,11 +15,12 @@ public class MovieContentProvide extends ContentProvider {
 
     public static final int CODE_MOVIES = 100;
     public static final int CODE_MOVIES_ID = 200;
-
     //Stage 2
     public static final int CODE_MOVIE_TRAILER = 222;
     public static final int CODE_MOVIE_TRAILER_ID = 300;
     public static final int CODE_MOVIE_REVIEWS = 400;
+    public static final int CODE_FAVORITE_MOVIE=500;
+    public static final int CODE_MOVIE_FAVORITE_ID=501;
 
     // Member variable for a TaskDbHelper that's initialized in the onCreate() method
     private MovieDBHelper movieDbHelper;
@@ -45,6 +46,9 @@ public class MovieContentProvide extends ContentProvider {
 
         matcher.addURI(authority, MoviesContract.PATH_MOVIE_REVIEWS, CODE_MOVIE_REVIEWS);
 
+        matcher.addURI(authority, MoviesContract.PATH_MOVIE_FAVORITE, CODE_FAVORITE_MOVIE);
+        matcher.addURI(authority, MoviesContract.PATH_MOVIE_FAVORITE + "/#", CODE_MOVIE_FAVORITE_ID);
+
         return matcher;
     }
 
@@ -59,7 +63,6 @@ public class MovieContentProvide extends ContentProvider {
                 int rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
-                        //String vote_count = value.getAsString(MoviesContract.MovieEntry.COLUMN_VOTE_COUNT);
                         long _id = db.insert(MoviesContract.MovieEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             rowsInserted++;
@@ -118,6 +121,27 @@ public class MovieContentProvide extends ContentProvider {
                 }
 
                 return rowsInserted3;
+            case CODE_FAVORITE_MOVIE :
+                db.beginTransaction();
+                int rowsInserted4 = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(MoviesContract.MovieFavoriteEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsInserted4++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                }
+                finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted4 > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+
+                return rowsInserted4;
 
             default:
                 return super.bulkInsert(uri, values);
@@ -208,6 +232,34 @@ public class MovieContentProvide extends ContentProvider {
                         sortOrder);
                 break;
             }
+            case CODE_MOVIE_FAVORITE_ID:{
+
+                String movieID = uri.getLastPathSegment();
+                String[] selectionArguments = new String[]{movieID};
+
+                cursor = movieDbHelper.getReadableDatabase().query(
+                        MoviesContract.MovieFavoriteEntry.TABLE_NAME,
+                        null,
+                        MoviesContract.MovieFavoriteEntry.COLUMN_ID + " = ? ",
+                        selectionArguments,
+                        null,
+                        null,
+                        sortOrder);
+
+                break;
+            }
+            case  CODE_FAVORITE_MOVIE: {
+                cursor = movieDbHelper.getReadableDatabase().query(
+                        MoviesContract.MovieFavoriteEntry.TABLE_NAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        sortOrder);
+
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -250,7 +302,6 @@ public class MovieContentProvide extends ContentProvider {
                         MoviesContract.MovieEntry.TABLE_NAME,
                         selection,
                         selectionArgs);
-
                 break;
             case CODE_MOVIE_TRAILER:
                 numRowsDeleted = movieDbHelper.getWritableDatabase().delete(
@@ -264,7 +315,12 @@ public class MovieContentProvide extends ContentProvider {
                         selection,
                         selectionArgs);
                 break;
-
+            case CODE_FAVORITE_MOVIE:
+                numRowsDeleted = movieDbHelper.getWritableDatabase().delete(
+                        MoviesContract.MovieFavoriteEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

@@ -9,6 +9,7 @@ import udacity.com.popularmovies.R;
 public class PopularMoviesPrefrences {
 
     public static final String PREF_SORT_POPULAR = "Popular";
+    public static final String PREF_SORT_TOPRATED = "Top Rated";
 
     public static String getSorting(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -25,9 +26,10 @@ public class PopularMoviesPrefrences {
 
         if (sort.equals(PREF_SORT_POPULAR))
            return "popular";
-        else
+        else if (sort.equals(PREF_SORT_TOPRATED))
            return "top_rated";
-
+        else
+            return "favorite";
     }
 
 }

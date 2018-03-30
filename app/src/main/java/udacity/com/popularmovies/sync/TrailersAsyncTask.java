@@ -1,18 +1,14 @@
 package udacity.com.popularmovies.sync;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.net.URL;
-
 import udacity.com.popularmovies.TrailerAdapter;
 import udacity.com.popularmovies.data.MoviesContract;
 import udacity.com.popularmovies.utilities.NetworkUtils;

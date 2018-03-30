@@ -3,8 +3,6 @@ package udacity.com.popularmovies.utilities;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -23,7 +21,6 @@ public final class NetworkUtils {
 
         final String MOVIE_API_KEY = "?api_key=" + context.getString(R.string.API_KEY);
         return buildUrl( context.getString(R.string.MOVIES_URL)+ PopularMoviesPrefrences.checkSort(context) + MOVIE_API_KEY);
-
     }
 
     //Stage 2

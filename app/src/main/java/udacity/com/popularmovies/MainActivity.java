@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements
    * The columns of data that we are interested in displaying within our MainActivity's list of
    * Movie data.
    */
-    public static final String[] MAIN_FORECAST_PROJECTION = {
+    public static final String[] MAIN_MOVIE_PROJECTION = {
             MoviesContract.MovieEntry.COLUMN_VOTE_COUNT,
             MoviesContract.MovieEntry.COLUMN_ID ,
             MoviesContract.MovieEntry.COLUMN_VIDEO,
@@ -51,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements
     private RecyclerView mRecyclerView;
     private int mPosition = RecyclerView.NO_POSITION;
     private ProgressBar mLoadingIndicator;
-    private GridLayoutManager gridManager;
     private final String KEY_RECYCLER_STATE = "recycler_state";
     private final String KEY_SORT_CHANGED = "sort_state";
     private static Bundle mBundleRecyclerViewState;
@@ -66,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements
         mRecyclerView =  findViewById(R.id.recyclerview_forecast);
         mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
 
-         gridManager =
+        GridLayoutManager gridManager =
               new GridLayoutManager(this ,2);
 
         /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
@@ -93,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.initLoader(ID_MOVIE_LOADER, null, this);
 
+        loaderManager.initLoader(ID_MOVIE_LOADER, null, this);
         MoviesSyncUtils.initialize(this);
 
         setSortTitle();
@@ -163,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 return new CursorLoader(this,
                         movieQueryUri,
-                        MAIN_FORECAST_PROJECTION,
+                        MAIN_MOVIE_PROJECTION,
                         selection,
                         null,
                         null);
@@ -216,7 +214,16 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onClick(String movieId) {
         Intent movieDetailIntent = new Intent(MainActivity.this, MovieDetailActivity.class);
-        Uri uriForMovieClicked = MoviesContract.MovieEntry.buildMovieUriWithId(movieId);
+        Uri uriForMovieClicked;
+
+        if(PopularMoviesPrefrences.checkSort(this) != "favorite" )
+        {
+            uriForMovieClicked = MoviesContract.MovieEntry.buildMovieUriWithId(movieId);
+        }
+        else
+        {
+            uriForMovieClicked = MoviesContract.MovieFavoriteEntry.buildMovieUriWithId(movieId);
+        }
         movieDetailIntent.setData(uriForMovieClicked);
         startActivity(movieDetailIntent);
     }
@@ -238,5 +245,6 @@ public class MainActivity extends AppCompatActivity implements
         String sortState = sort;
         mBundleSortChanged.putString(KEY_SORT_CHANGED , sortState);
     }
+
 
 }
